@@ -16,13 +16,29 @@ app.config['MYSQL_DATABASE_DB'] = 'biostatsGroup'
 mysql.init_app(app)
 
 
-@app.route('/', methods=['GET'])
-def index():
+@app.route('/', methods=['POST'])
+def signin():
     user = {'username': "Chika's Project"}
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM biostatsData')
     result = cursor.fetchall()
     return render_template('index.html', title='Home', user=user, biostats=result)
+
+@app.route('/register', methods=['POST'])
+def register():
+    user = {'username': "Chika's Project"}
+    cursor = mysql.get_db().cursor()
+    cursor.execute('SELECT * FROM biostatsData')
+    result = cursor.fetchall()
+    return render_template('register.html', title='Home', user=user, biostats=result)
+
+@app.route('/home', methods=['GET'])
+def index():
+    user = {'username': "Chika's Project"}
+    cursor = mysql.get_db().cursor()
+    cursor.execute('SELECT * FROM biostatsData')
+    result = cursor.fetchall()
+    return render_template('home.html', title='Home', user=user, biostats=result)
 
 
 @app.route('/view/<int:stat_id>', methods=['GET'])

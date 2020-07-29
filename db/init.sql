@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS userAccount (
 `lName` VARCHAR(20) CHARACTER SET utf8,
 `email` VARCHAR(50),
 `password` VARCHAR(20),
+`verified` INT,
 PRIMARY KEY (`id`)
 );
 
-INSERT INTO userAccount (fName, lName, email, password) VALUE ('Emily', 'Smith', 'demo@aol.com', '123');
+INSERT INTO userAccount (fName, lName, email, password, verified) VALUE ('Emily', 'Smith', 'demo@aol.com', '123', 1);

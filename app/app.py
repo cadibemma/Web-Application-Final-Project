@@ -24,6 +24,7 @@ def signin():
     result = cursor.fetchall()
     return render_template('index.html', title='Home', user=user, biostats=result)
 
+
 @app.route('/register', methods=['POST'])
 def register():
     user = {'username': "Chika's Project"}
@@ -31,6 +32,7 @@ def register():
     cursor.execute('SELECT * FROM biostatsData')
     result = cursor.fetchall()
     return render_template('register.html', title='Home', user=user, biostats=result)
+
 
 @app.route('/home', methods=['GET'])
 def index():
@@ -97,7 +99,7 @@ def form_delete_post(stat_id):
     return redirect('/', code=302)
 
 
-#API functions
+# API functions
 
 @app.route('/api/v1/biostats', methods=['GET'])
 def api_browse() -> str:
@@ -121,13 +123,12 @@ def api_retrieve(stat_id) -> str:
 
 @app.route('/api/v1/biostats/', methods=['POST'])
 def api_add() -> str:
-
     content = request.json
 
     cursor = mysql.get_db().cursor()
     inputData = (content['Name'], content['Sex'], content['Age'], content['Height_in'], content['Weight_lbs'])
     sql_insert_query = """INSERT INTO biostatsData (NAME, SEX, AGE, HEIGHT_IN, WEIGHT_LBS) VALUES (%s, %s, %s, %s, %s)"""
-    cursor.execute(sql_insert_query,inputData)
+    cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
     resp = Response(status=201, mimetype='application/json')
     return resp
@@ -135,7 +136,6 @@ def api_add() -> str:
 
 @app.route('/api/v1/biostats/<int:stat_id>', methods=['PUT'])
 def api_edit(stat_id) -> str:
-
     content = request.json
 
     cursor = mysql.get_db().cursor()
@@ -150,7 +150,6 @@ def api_edit(stat_id) -> str:
 
 @app.route('/api/v1/biostats/<int:stat_id>', methods=['DELETE'])
 def api_delete(stat_id) -> str:
-
     cursor = mysql.get_db().cursor()
     sql_delete_query = """DELETE FROM biostatsData WHERE id = %s"""
     cursor.execute(sql_delete_query, stat_id)

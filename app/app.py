@@ -81,7 +81,7 @@ def form_delete_post(stat_id):
     return redirect('/', code=302)
 
 
-#API functions (Web Application  Part 4/ Final)
+#API functions
 
 @app.route('/api/v1/biostats', methods=['GET'])
 def api_browse() -> str:

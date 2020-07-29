@@ -16,22 +16,40 @@ app.config['MYSQL_DATABASE_DB'] = 'biostatsGroup'
 mysql.init_app(app)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/')
 def signin():
     user = {'username': "Chika's Project"}
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM biostatsData')
     result = cursor.fetchall()
-    return render_template('index.html', title='Home', user=user, biostats=result)
+    return render_template('index.html', title='Biostats Sign-in', user=user, biostats=result)
 
 
-@app.route('/register', methods=['POST'])
+# @app.route('/', methods=['POST'])
+# def signin():
+#     user = {'username': "Chika's Project"}
+#     cursor = mysql.get_db().cursor()
+#     cursor.execute('SELECT * FROM biostatsData')
+#     result = cursor.fetchall()
+#     return render_template('index.html', title='Home', user=user, biostats=result)
+
+
+@app.route('/register')
 def register():
     user = {'username': "Chika's Project"}
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM biostatsData')
     result = cursor.fetchall()
-    return render_template('register.html', title='Home', user=user, biostats=result)
+    return render_template('register.html', title='Register', user=user, biostats=result)
+
+
+# @app.route('/register', methods=['POST'])
+# def register():
+#     user = {'username': "Chika's Project"}
+#     cursor = mysql.get_db().cursor()
+#     cursor.execute('SELECT * FROM biostatsData')
+#     result = cursor.fetchall()
+#     return render_template('register.html', title='Register', user=user, biostats=result)
 
 
 @app.route('/home', methods=['GET'])

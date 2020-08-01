@@ -33,7 +33,7 @@
     <link href= "{{ url_for('static',filename='styles/floating-labels.css') }}" rel="stylesheet">
 </head>
 <body>
-<form class="form-signin">
+<form class="form-signin" action="/" method="post">
     <div class="text-center mb-4">
         <img class="mb-4"  src= "{{ url_for('static',filename='assets/brand/bootstrap-solid.svg') }}" alt="" width="72" height="72">
         <h1 class="h2 mb-3 font-weight-normal">Biostats Data Manager</h1>
@@ -42,13 +42,16 @@
     </div>
 
     <div class="form-label-group">
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="inputEmail" required autofocus>
         <label for="inputEmail">Email address</label>
     </div>
 
     <div class="form-label-group">
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="inputPassword" required>
         <label for="inputPassword">Password</label>
+    </div>
+    <div style="text-align: center">
+        <p class="mb-1 font-weight-light" style="color: red">{{ response }}</p>
     </div>
 
     <div class="checkbox mb-3">

@@ -16,27 +16,38 @@ app.config['MYSQL_DATABASE_DB'] = 'biostatsGroup'
 mysql.init_app(app)
 
 
+name = 'test'
+
+
 @app.route('/')
+def signin_page():
+    return render_template('index.html', title='Biostats Sign-in')
+
+
+@app.route('/', methods=['POST'])
 def signin():
-    user = {'username': "Chika's Project"}
+    inputData = (request.form.get('inputEmail'), request.form.get('inputPassword'))
+    # user = {'username': "Chika's Project"}
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM biostatsData')
+    query = """SELECT * FROM userAccount WHERE email = %s AND password = %s"""
+    cursor.execute(query, inputData)
     result = cursor.fetchall()
-    return render_template('index.html', title='Biostats Sign-in', user=user, biostats=result)
+    count = cursor.rowcount
 
-
-# @app.route('/', methods=['POST'])
-# def signin():
-#     user = {'username': "Chika's Project"}
-#     cursor = mysql.get_db().cursor()
-#     cursor.execute('SELECT * FROM biostatsData')
-#     result = cursor.fetchall()
-#     return render_template('index.html', title='Home', user=user, biostats=result)
+    if count == 0:
+        return render_template('index.html', title='Biostats Sign-in', response='Incorrect Email / Password')
+    else:
+        if result[0]['verified'] == 1:
+            #name variable not updating
+            name = result[0]['fName'] + ' ' + result[0]['lName']
+            return redirect('/home', code=302)
+        else:
+            return render_template('index.html', title='Biostats Sign-in', response='Account not verified. Please '
+                                                                                    'check email to verify account before access.')
 
 
 @app.route('/register')
-def register():
-    user = {'username': "Chika's Project"}
+def register_page():
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM biostatsData')
     result = cursor.fetchall()
@@ -54,7 +65,8 @@ def register():
 
 @app.route('/home', methods=['GET'])
 def index():
-    user = {'username': "Chika's Project"}
+    # user = {'username': "Chika's Project"}
+    user = {'username': name}
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM biostatsData')
     result = cursor.fetchall()

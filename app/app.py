@@ -50,7 +50,7 @@ def register_page():
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM biostatsData')
     result = cursor.fetchall()
-    return render_template('register.html', title='Register', user=user, biostats=result)
+    return render_template('register.html', title='Register')
 
 
 # @app.route('/register', methods=['POST'])

@@ -15,7 +15,6 @@ app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'biostatsGroup'
 mysql.init_app(app)
 
-
 name = 'test'
 
 
@@ -38,7 +37,7 @@ def signin():
         return render_template('index.html', title='Biostats Sign-in', response='Incorrect Email / Password')
     else:
         if result[0]['verified'] == 1:
-            #name variable not updating
+            # name variable not updating
             name = result[0]['fName'] + ' ' + result[0]['lName']
             return redirect('/home', code=302)
         else:
@@ -99,7 +98,7 @@ def form_update_post(stat_id):
                         WHERE t.id=%s """
     cursor.execute(sql_update_query, inputData)
     mysql.get_db().commit()
-    return redirect('/', code=302)
+    return redirect('/home', code=302)
 
 
 @app.route('/biostats/new', methods=['GET'])
@@ -117,7 +116,7 @@ def form_insert_post():
     %s) """
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
-    return redirect('/', code=302)
+    return redirect('/home', code=302)
 
 
 @app.route('/delete/<int:stat_id>', methods=['POST'])
@@ -126,7 +125,7 @@ def form_delete_post(stat_id):
     sql_delete_query = """DELETE FROM biostatsData WHERE id=%s"""
     cursor.execute(sql_delete_query, stat_id)
     mysql.get_db().commit()
-    return redirect('/', code=302)
+    return redirect('/home', code=302)
 
 
 # API functions

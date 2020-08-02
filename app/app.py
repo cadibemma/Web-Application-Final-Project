@@ -42,24 +42,28 @@ def signin():
             return redirect('/home', code=302)
         else:
             return render_template('index.html', title='Biostats Sign-in', response='Account not verified. Please '
-                                                                                    'check email to verify account before access.')
+                                                                                    'check email to verify account '
+                                                                                    'before access.')
 
 
 @app.route('/register')
 def register_page():
-    cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM biostatsData')
-    result = cursor.fetchall()
     return render_template('register.html', title='Register')
 
 
-# @app.route('/register', methods=['POST'])
-# def register():
-#     user = {'username': "Chika's Project"}
-#     cursor = mysql.get_db().cursor()
-#     cursor.execute('SELECT * FROM biostatsData')
-#     result = cursor.fetchall()
-#     return render_template('register.html', title='Register', user=user, biostats=result)
+@app.route('/register', methods=['POST'])
+def register():
+    inputData = (request.form.get('inputFname'), request.form.get('inputLname'), request.form.get('inputEmail'),
+                 request.form.get('inputPassword'))
+    email = request.form.get('inputEmail')
+
+    cursor = mysql.get_db().cursor()
+    email_check_query = """SELECT * FROM userAccount where email = %s"""
+    cursor.execute(email_check_query, email)
+    result = cursor.fetchall()
+    email_exist = result.rowcount
+
+    return render_template('register.html', title='Register', biostats=result)
 
 
 @app.route('/home', methods=['GET'])
@@ -72,6 +76,7 @@ def index():
     return render_template('home.html', title='Home', user=user, biostats=result)
 
 
+# CURRENTLY WORKING --- DO NOT TAMPER
 @app.route('/view/<int:stat_id>', methods=['GET'])
 def record_view(stat_id):
     cursor = mysql.get_db().cursor()
@@ -156,7 +161,8 @@ def api_add() -> str:
 
     cursor = mysql.get_db().cursor()
     inputData = (content['Name'], content['Sex'], content['Age'], content['Height_in'], content['Weight_lbs'])
-    sql_insert_query = """INSERT INTO biostatsData (NAME, SEX, AGE, HEIGHT_IN, WEIGHT_LBS) VALUES (%s, %s, %s, %s, %s)"""
+    sql_insert_query = """INSERT INTO biostatsData (NAME, SEX, AGE, HEIGHT_IN, WEIGHT_LBS) VALUES (%s, %s, %s, %s, 
+    %s) """
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
     resp = Response(status=201, mimetype='application/json')
@@ -169,7 +175,8 @@ def api_edit(stat_id) -> str:
 
     cursor = mysql.get_db().cursor()
     inputData = (content['Name'], content['Sex'], content['Age'], content['Height_in'], content['Weight_lbs'], stat_id)
-    sql_insert_query = """UPDATE biostatsData b SET b.Name = %s, b.Sex =%s, b.Age =%s, b.Height_in = %s, b.Weight_lbs = %s WHERE b.id = %s"""
+    sql_insert_query = """UPDATE biostatsData b SET b.Name = %s, b.Sex =%s, b.Age =%s, b.Height_in = %s, b.Weight_lbs 
+    = %s WHERE b.id = %s """
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
 

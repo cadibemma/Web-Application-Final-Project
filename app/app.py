@@ -15,7 +15,7 @@ app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'biostatsGroup'
 mysql.init_app(app)
 
-name = 'test'
+name = ''
 
 
 @app.route('/')
@@ -38,6 +38,7 @@ def signin():
     else:
         if result[0]['verified'] == 1:
             # name variable not updating
+            global name
             name = result[0]['fName'] + ' ' + result[0]['lName']
             return redirect('/home', code=302)
         else:

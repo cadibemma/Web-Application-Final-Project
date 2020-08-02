@@ -17,7 +17,6 @@ mysql.init_app(app)
 
 name = ''
 
-
 @app.route('/')
 def signin_page():
     return render_template('index.html', title='Biostats Sign-in')
@@ -26,7 +25,6 @@ def signin_page():
 @app.route('/', methods=['POST'])
 def signin():
     inputData = (request.form.get('inputEmail'), request.form.get('inputPassword'))
-    # user = {'username': "Chika's Project"}
     cursor = mysql.get_db().cursor()
     query = """SELECT * FROM userAccount WHERE email = %s AND password = %s"""
     cursor.execute(query, inputData)
@@ -37,7 +35,6 @@ def signin():
         return render_template('index.html', title='Biostats Sign-in', response='Incorrect Email / Password')
     else:
         if result[0]['verified'] == 1:
-            # name variable not updating
             global name
             name = result[0]['fName'] + ' ' + result[0]['lName']
             return redirect('/home', code=302)
@@ -59,12 +56,15 @@ def register():
     email = request.form.get('inputEmail')
 
     cursor = mysql.get_db().cursor()
-    email_check_query = """SELECT * FROM userAccount where email = %s"""
-    cursor.execute(email_check_query, email)
+    # email_check_query = """SELECT * FROM userAccount where email = %s"""
+    cursor.execute("""SELECT * FROM userAccount where email=%s""", email)
+    # cursor.execute("""SELECT * FROM userAccount where email='demo@aol.com'""")
     result = cursor.fetchall()
-    email_exist = result.rowcount
+    email_exist = cursor.rowcount
 
-    return render_template('register.html', title='Register', biostats=result)
+    if email_exist == 1:
+        return render_template('register.html', title='Register', response='An account already exists with this email.')
+        # return render_template('register.html', title='Register', biostats=result)
 
 
 @app.route('/home', methods=['GET'])

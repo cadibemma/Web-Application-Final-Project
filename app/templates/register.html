@@ -33,31 +33,35 @@
     <link href= "{{ url_for('static',filename='styles/floating-labels.css') }}" rel="stylesheet">
 </head>
 <body>
-<form class="form-signin">
+<form class="form-signin" action="/register" method="post">
     <div class="text-center mb-4">
         <img class="mb-4" src= "{{ url_for('static',filename='assets/brand/bootstrap-solid.svg') }}" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Create an Account</h1>
     </div>
 
     <div class="form-label-group">
-        <input type="text" id="inputFname" class="form-control" placeholder="First Name" required autofocus>
+        <input type="text" id="inputFname" class="form-control" name="inputFname" placeholder="First Name" required autofocus>
         <label for="inputFname">First Name</label>
     </div>
 
     <div class="form-label-group">
-        <input type="text" id="inputLname" class="form-control" placeholder="Last Name" required autofocus>
+        <input type="text" id="inputLname" class="form-control" name="inputLname" placeholder="Last Name" required autofocus>
         <label for="inputLname">Last Name</label>
     </div>
 
 
     <div class="form-label-group">
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <input type="email" id="inputEmail" class="form-control" name="inputEmail" placeholder="Email address" required autofocus>
         <label for="inputEmail">Email address</label>
     </div>
 
     <div class="form-label-group">
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" class="form-control" name="inputPassword" placeholder="Password" required>
         <label for="inputPassword">Password</label>
+    </div>
+
+     <div style="text-align: center">
+        <p class="mb-1 font-weight-light" style="color: red">{{ response }}</p>
     </div>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>

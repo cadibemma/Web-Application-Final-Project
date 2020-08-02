@@ -1,6 +1,6 @@
 from typing import List, Dict
 import simplejson as json
-from flask import Flask, request, Response, redirect, render_template, url_for, flash
+from flask import Flask, request, Response, redirect, render_template, url_for
 from flask_mail import Mail, Message
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
@@ -80,17 +80,24 @@ def register():
         # mysql.get_db().commit()
         # sendgrid login: email: cla22@njit.edu password: L!ZKAhXvk/.j$/8
 
-        msg = Message('Twilio SendGrid Test Email', recipients=[email])
-        msg.body = ('Congratulations! You have sent a test email with '
-                    'Twilio SendGrid!')
-        msg.html = ('<h1>Twilio SendGrid Test Email</h1>'
-                    '<p>Congratulations! You have sent a test email with '
-                    '<b>Twilio SendGrid</b>!</p>')
+        # msg = Message('Twilio SendGrid Test Email', recipients=[email])
+        # # msg.body = ('Congratulations! You have sent a test email with '
+        #             # 'Twilio SendGrid!')
+        # msg.html = ('<h1>Twilio SendGrid Test Email</h1>'
+        #             '<p>Congratulations! You have sent a test email with '
+        #             '<b>Twilio SendGrid</b>!</p>')
+
+        msg = Message('Activate Biostats Data Manager Account', recipients=[email])
+        # msg.body = ('Congratulations and welcome to the Biostats family! Please click here to activate you account. '
+        #             '**P.S. You will not be able to sign in until account is activated**')
+        msg.html = (f'<h1>Activate Biostats Data Manager Account</h1>'
+                    f'<p>Congratulations and welcome to the Biostats family! Please '
+                    f'<a href=\"http://0.0.0.0:5000/activate/1\">click here</a> to activate your account.</p>'
+                    f'<br><i>**P.S. You will not be able to sign in until account is activated**</i>')
         mail.send(msg)
-        flash(f'A test message was sent to {email}.')
-        return redirect(url_for('index'))
-        # return render_template('register.html', title='Register', response_s=f'Success! Please check email ({email}) '
-         #                                                                    f'for link to verify account')
+        # return redirect(url_for('index'))
+        return render_template('register.html', title='Register', response_s=f'Success! Please check email ({email}) '
+                                                                             f'for link to verify account')
 
 
 @app.route('/home', methods=['GET'])

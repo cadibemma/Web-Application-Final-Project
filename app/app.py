@@ -1,9 +1,10 @@
 from typing import List, Dict
 import simplejson as json
-from flask import Flask, request, Response, redirect
-from flask import render_template
+from flask import Flask, request, Response, redirect, render_template, url_for, flash
+from flask_mail import Mail, Message
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
+
 
 app = Flask(__name__)
 mysql = MySQL(cursorclass=DictCursor)
@@ -15,10 +16,20 @@ app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'biostatsGroup'
 mysql.init_app(app)
 
+app.config['SECRET_KEY'] = 'top-secret!'
+app.config['MAIL_SERVER'] = 'smtp.sendgrid.net'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'apikey'
+app.config['MAIL_PASSWORD'] = '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'
+app.config['MAIL_DEFAULT_SENDER'] = 'cla22@njit.edu'
+mail = Mail(app)
+
 name = ''
 
+
 @app.route('/')
-def signin_page():
+def index():
     return render_template('index.html', title='Biostats Sign-in')
 
 
@@ -56,19 +67,34 @@ def register():
     email = request.form.get('inputEmail')
 
     cursor = mysql.get_db().cursor()
-    # email_check_query = """SELECT * FROM userAccount where email = %s"""
-    cursor.execute("""SELECT * FROM userAccount where email=%s""", email)
-    # cursor.execute("""SELECT * FROM userAccount where email='demo@aol.com'""")
-    result = cursor.fetchall()
+    email_check_query = """SELECT * FROM userAccount where email=%s"""
+    new_input_query = """INSERT INTO userAccount (fName, lName, email, password, verified) VALUES (%s, %s, %s, %s, 
+    0) """
+    cursor.execute(email_check_query, email)
     email_exist = cursor.rowcount
 
     if email_exist == 1:
         return render_template('register.html', title='Register', response='An account already exists with this email.')
-        # return render_template('register.html', title='Register', biostats=result)
+    else:
+        # cursor.execute(new_input_query, inputData)
+        # mysql.get_db().commit()
+        # sendgrid login: email: cla22@njit.edu password: L!ZKAhXvk/.j$/8
+
+        msg = Message('Twilio SendGrid Test Email', recipients=[email])
+        msg.body = ('Congratulations! You have sent a test email with '
+                    'Twilio SendGrid!')
+        msg.html = ('<h1>Twilio SendGrid Test Email</h1>'
+                    '<p>Congratulations! You have sent a test email with '
+                    '<b>Twilio SendGrid</b>!</p>')
+        mail.send(msg)
+        flash(f'A test message was sent to {email}.')
+        return redirect(url_for('index'))
+        # return render_template('register.html', title='Register', response_s=f'Success! Please check email ({email}) '
+         #                                                                    f'for link to verify account')
 
 
 @app.route('/home', methods=['GET'])
-def index():
+def home():
     # user = {'username': "Chika's Project"}
     user = {'username': name}
     cursor = mysql.get_db().cursor()

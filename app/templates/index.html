@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/floating-labels/">
 
     <!-- Bootstrap core CSS -->
-    <link href= "{{ url_for('static',filename='assets/dist/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='assets/dist/css/bootstrap.css') }}" rel="stylesheet">
 
     <style>
         .bd-placeholder-img {
@@ -30,26 +30,35 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href= "{{ url_for('static',filename='styles/floating-labels.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='styles/floating-labels.css') }}" rel="stylesheet">
 </head>
 <body>
 <form class="form-signin" action="/" method="post">
+    {% if status %}
+    <div class="alert alert-success" role="alert">
+        {{ status }}
+    </div>
+    {% endif %}
     <div class="text-center mb-4">
-        <img class="mb-4"  src= "{{ url_for('static',filename='assets/brand/bootstrap-solid.svg') }}" alt="" width="72" height="72">
+        <img class="mb-4" src="{{ url_for('static',filename='assets/brand/biostat_logo.jpg') }}" alt="" width="100"
+             height="100">
         <h1 class="h2 mb-3 font-weight-normal">Biostats Data Manager</h1>
         <br/>
         <h3 class="h4 mb-3 font-weight-normal"> Sign in</h3>
     </div>
 
     <div class="form-label-group">
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="inputEmail" required autofocus>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="inputEmail" required
+               autofocus>
         <label for="inputEmail">Email address</label>
     </div>
 
     <div class="form-label-group">
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="inputPassword" required>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="inputPassword"
+               required>
         <label for="inputPassword">Password</label>
     </div>
+
     <div style="text-align: center">
         <p class="mb-1 font-weight-light" style="color: red">{{ response }}</p>
     </div>
@@ -61,7 +70,6 @@
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <a href="/register" class="card-link btn btn-lg btn-primary btn-block">Create an Account</a>
-    <p class="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
 </form>
 </body>
 </html>

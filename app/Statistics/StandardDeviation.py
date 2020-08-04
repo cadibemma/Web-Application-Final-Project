@@ -1,5 +1,5 @@
-from Calculator.SquareRoot import sqrt
-from Statistics.Variance import variance
+from app.Calculator.SquareRoot import sqrt
+from app.Statistics.Variance import variance
 
 
 def stddev(num):

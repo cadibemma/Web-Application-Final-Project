@@ -1,8 +1,8 @@
-from Calculator.Calculator import Calculator
-from Statistics.Median import median
-from Statistics.Mode import mode
-from Statistics.StandardDeviation import stddev
-from Statistics.Variance import variance
+from app.Calculator.Calculator import Calculator
+from app.Statistics.Median import median
+from app.Statistics.Mode import mode
+from app.Statistics.StandardDeviation import stddev
+from app.Statistics.Variance import variance
 
 
 class Statistics(Calculator):
@@ -26,3 +26,5 @@ class Statistics(Calculator):
     def variance(self, data):
         self.result = variance(data)
         return self.result
+
+    pass

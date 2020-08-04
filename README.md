@@ -4,7 +4,8 @@
 
 ### Description
 
-This project  
+This project is a flask application that displays data that is stored in the database. User is able to view a row of data, 
+modify the data, delete the row of data, and add a new row of data to the table. As a testing feature, user can click on the 
 
 ---
 

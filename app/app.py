@@ -5,7 +5,6 @@ from flask_mail import Mail, Message
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
 
-
 app = Flask(__name__)
 mysql = MySQL(cursorclass=DictCursor)
 
@@ -113,6 +112,7 @@ def home():
     else:
         return redirect(url_for("index"))
 
+
 # CURRENTLY WORKING --- DO NOT TAMPER
 @app.route('/view/<int:stat_id>', methods=['GET'])
 def record_view(stat_id):
@@ -146,6 +146,17 @@ def form_update_post(stat_id):
 @app.route('/biostats/new', methods=['GET'])
 def form_insert_get():
     return render_template('new.html', title='New Biostats Form')
+
+
+@app.route('/statistics', methods=['GET'])
+def statistics():
+    if name:
+        cursor = mysql.get_db().cursor()
+        cursor.execute('SELECT  Age FROM biostatsData')
+        result = cursor.fetchall()
+        for row in result:
+            print(row)
+        return render_template('statistics.html', biostats=result)
 
 
 @app.route('/biostats/new', methods=['POST'])
@@ -236,6 +247,14 @@ def api_delete(stat_id) -> str:
     mysql.get_db().commit()
     resp = Response(status=200, mimetype='application/json')
     return resp
+
+
+@app.route('/simple_chart', methods=['GET'])
+def chart():
+    legend = 'Monthly Data'
+    labels = ["January", "February", "March", "April", "May", "June", "July", "August"]
+    values = [10, 9, 8, 7, 6, 4, 7, 8]
+    return render_template('chart.html', values=values, labels=labels, legend=legend)
 
 
 if __name__ == '__main__':

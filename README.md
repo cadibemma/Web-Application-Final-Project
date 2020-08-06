@@ -17,6 +17,14 @@ On the initial run of the project, user has to login before accessing the data. 
  user need to activate their account by click the link in the email used in the registration form. Once activated, user can now log in.
 
 #### Feature 2:
+On this the User once signed in they are able to able to see graphs and ability to see 
+Simple statistics on the Age Height and weight of the database.
+The has the ability to display graph of any given column in the table bioStatsData.
+an also see the Statistics on each feature(column)
+
+
+![image2](images/image%20(2).png)
+![image2](images/image%20(3).png)
 
 
 

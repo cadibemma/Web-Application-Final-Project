@@ -148,6 +148,17 @@ def form_insert_get():
     return render_template('new.html', title='New Biostats Form')
 
 
+@app.route('/statistics', methods=['GET'])
+def statistics():
+    if name:
+        cursor = mysql.get_db().cursor()
+        cursor.execute('SELECT  Age FROM biostatsData')
+        result = cursor.fetchall()
+        for row in result:
+            print(row)
+        return render_template('statistics.html', biostats=result)
+
+
 @app.route('/biostats/new', methods=['POST'])
 def form_insert_post():
     cursor = mysql.get_db().cursor()
@@ -238,7 +249,7 @@ def api_delete(stat_id) -> str:
     return resp
 
 
-@app.route("/simple_chart")
+@app.route('/simple_chart', methods=['GET'])
 def chart():
     legend = 'Monthly Data'
     labels = ["January", "February", "March", "April", "May", "June", "July", "August"]
